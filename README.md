@@ -13,6 +13,14 @@ git clone https://github.com/robynwright/arbor-test.git
 cd arbor-test
 ```
 
+### Create a .env file by copying the example:
+
+```bash
+Copy
+Edit
+cp .env.example .env
+```
+
 ### Run the Server
 
 ```bash

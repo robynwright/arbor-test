@@ -78,7 +78,7 @@ class QuizController extends Controller
 
         if ($this->isValidEnglishWord($word) && $found) {
 
-            // save to high scores
+            // TODO: move to own method
             $studentId = $request->session()->get('student.id');
             $puzzleId = $request->session()->get('puzzleId');
             $score = strlen($word);
@@ -102,6 +102,11 @@ class QuizController extends Controller
             $request->session()->put('words', $words);
         } else {
             $found = false;
+        }
+
+        // if there are no more available letters, end the game
+        if (empty($available)) {
+            return redirect()->route('quiz.finish');
         }
 
 

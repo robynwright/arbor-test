@@ -16,15 +16,20 @@ class QuizController extends Controller
 
         $loginController = new StudentLoginController();
 
-        if (!$request->session()->has('student')) {
-            $student = $loginController->validateLogin($request);
-
-            if (!$student) {
-                return redirect('/')
-                    ->with('alert', 'Invalid Student ID. Please try again.');
+        // Check if student is already logged in
+        if ($loginController->checkLoggedIn()) {
+            $student = $loginController->getStudentSession();
+        } else {
+            if (!$request->session()->has('student')) {
+                $student = $loginController->validateLogin($request);
+    
+                if (!$student) {
+                    return redirect('/')
+                        ->with('alert', 'Invalid Student ID. Please try again.');
+                }
+    
+                $loginController->setStudentSession($student);
             }
-
-            $loginController->setStudentSession($student);
         }
 
         // Generate puzzle and reset session data
@@ -105,9 +110,9 @@ class QuizController extends Controller
         }
 
         // if there are no more available letters, end the game
-        if (empty($available)) {
-            return redirect()->route('quiz.finish');
-        }
+        // if (empty($available)) {
+        //     return redirect()->route('quiz.finish');
+        // }
 
 
         return view('quiz', [
@@ -127,16 +132,62 @@ class QuizController extends Controller
         }
 
         $puzzleString = $request->session()->get('puzzleString');
+        $usedIndexes = $request->session()->get('usedIndexes', []);
         $words = $request->session()->get('words', []);
         $totalScore = array_sum(array_column($words, 'score'));
+
+        $remainingLetters = [];
+        $puzzleArray = str_split($puzzleString);
+
+        foreach ($puzzleArray as $i => $char) {
+            if (!in_array($i, $usedIndexes)) {
+                $remainingLetters[] = $char;
+            }
+        }
+
+        $remainingWords = $this->getRemainingValidWords($remainingLetters);
 
         return view('quiz_finish', [
             'totalScore' => $totalScore,
             'puzzleString' => $puzzleString,
-            'usedIndexes' => $request->session()->get('usedIndexes', []),
-            'words' => $words
+            'usedIndexes' => $usedIndexes,
+            'words' => $words,
+            'remainingLetters' => $remainingLetters,
+            'remainingWords' => $remainingWords,
         ]);
     }
+
+    private function getRemainingValidWords(array $letters): array
+    {
+        $wordList = new WordListService();
+        $validWords = [];
+
+        foreach ($wordList->getAllWords() as $word) {
+            $tempLetters = $letters;
+            $wordChars = str_split($word);
+            $canForm = true;
+
+            foreach ($wordChars as $char) {
+                $index = array_search($char, $tempLetters);
+                if ($index === false) {
+                    $canForm = false;
+                    break;
+                }
+                unset($tempLetters[$index]); // remove the letter
+            }
+
+            if ($canForm) {
+                $validWords[] = [
+                    'word' => $word,
+                    'score' => strlen($word),
+                ];
+            }
+        }
+
+        return $validWords;
+    }
+
+
 
     private function generatePuzzleString(int $length = 14): string
     {

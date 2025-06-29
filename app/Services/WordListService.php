@@ -17,6 +17,10 @@ class WordListService
         $this->words = file($this->filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
     }
 
+    public function getAllWords(): array
+    {
+        return $this->words;
+    }
 
     public function getWords(int $maxLength = 14): array
     {

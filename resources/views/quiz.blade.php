@@ -64,7 +64,7 @@
             <h2 class="text-xl font-bold mb-4">Your Words</h2>
             <ul class="space-y-1">
                 @forelse($words as $entry)
-                    <li>{{ $entry['word'] }} - <span class="text-green-400">{{ $entry['score'] }} pts</span></li>
+                    <li>{{ $entry['word'] }} - <span class="text-[#7cb93d]">{{ $entry['score'] }} pts</span></li>
                 @empty
                     <li class="text-gray-400">No words submitted yet.</li>
                 @endforelse

@@ -13,6 +13,16 @@ class StudentLoginController extends Controller
         return Student::find($studentId);
     }
 
+    public function checkLoggedIn()
+    {
+        return session()->has('student');
+    }
+
+    public function getStudentSession()
+    {
+        return session('student');
+    }
+
     public function setStudentSession($student)
     {
         session([

@@ -33,7 +33,7 @@ class QuizController extends Controller
         }
 
         // Generate puzzle and reset session data
-        $puzzleString = $this->generatePuzzleString(14);
+        $puzzleString = $this->generatePuzzleString(6);
         
         $request->session()->put('puzzleString', $puzzleString);
         $request->session()->put('usedIndexes', []);
@@ -110,6 +110,7 @@ class QuizController extends Controller
         }
 
         // if there are no more available letters, end the game
+        // This was causing issues with the game ending too early, so I commented it out
         // if (empty($available)) {
         //     return redirect()->route('quiz.finish');
         // }
@@ -189,7 +190,7 @@ class QuizController extends Controller
 
 
 
-    private function generatePuzzleString(int $length = 14): string
+    private function generatePuzzleString(int $length = 6): string
     {
         $wordList = new WordListService();
 
@@ -201,7 +202,6 @@ class QuizController extends Controller
         $puzzleString = implode('', $letters);
         
         // Save the puzzle to the database 
-        // I would rather move this to its own class, but am keeping it here due to time constraints.
         $puzzle = new \App\Models\Puzzle();
         $puzzle->student_id = session('student.id');
         $puzzle->puzzle_string = $puzzleString;

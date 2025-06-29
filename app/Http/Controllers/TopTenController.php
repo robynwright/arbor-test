@@ -16,8 +16,6 @@ class TopTenController extends Controller
             ->take(10)
             ->get();
 
-            // dump the above sql
-
         return view('top_ten', compact('scores'));
     }
 }

@@ -86,6 +86,5 @@ http://127.0.0.1:8000
 ## Small changes I would do to improve the system
 
 - Implement a full student authentication system with login and registration.
-- Standardize puzzle string length and ensure each has similar scoring potential.
 - Use AJAX for word submission to improve UX and avoid full page reloads.
 - Find a more appopriate list of english words as the selected list does seem to have names includes

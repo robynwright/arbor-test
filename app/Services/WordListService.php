@@ -22,14 +22,14 @@ class WordListService
         return $this->words;
     }
 
-    public function getWords(int $maxLength = 14): array
+    public function getWords(int $length = 6): array
     {
-        return array_filter($this->words, fn($word) => strlen($word) <= $maxLength);
+        return array_filter($this->words, fn($word) => strlen($word) == $length);
     }
 
-    public function getRandomWords(int $count = 4, int $maxLength = 14): array
+    public function getRandomWords(int $count = 4, int $length = 6): array
     {
-        $filtered = $this->getWords($maxLength);
+        $filtered = $this->getWords($length);
         shuffle($filtered);
         return array_slice($filtered, 0, $count);
     }

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Puzzle extends Model
 {
-    //
     protected $fillable = [
         'student_id',
         'puzzle_string',

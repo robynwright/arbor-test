@@ -5,7 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\TopTenController;
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::post('/quiz', [QuizController::class, 'index'])->name('quiz.index');
 Route::post('/quiz/play', [QuizController::class, 'play'])->name('quiz.play');

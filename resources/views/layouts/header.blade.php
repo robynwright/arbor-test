@@ -8,7 +8,7 @@
 </head>
 <body class="bg-[#fefcf8] text-zinc-800">
     <header class="p-4 flex items-center justify-between">
-        <a href="/">
+        <a href=" {{ route('home') }}" >
             <img src="https://arbor-education.com/wp-content/uploads/2024/10/arbor-education-logo.svg" alt="Arbor Education Logo" class="inline-block h-8 mr-2">
         </a>
         

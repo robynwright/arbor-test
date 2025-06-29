@@ -11,9 +11,12 @@ class TopTenController extends Controller
     {   
         // Fetch the top 10 scores from the database
         $scores = Puzzle::with('student')
+            ->where('total_score', '>', 0)
             ->orderBy('total_score', 'desc')
             ->take(10)
             ->get();
+
+            // dump the above sql
 
         return view('top_ten', compact('scores'));
     }

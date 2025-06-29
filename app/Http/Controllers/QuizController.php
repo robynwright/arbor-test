@@ -43,6 +43,11 @@ class QuizController extends Controller
 
     public function play(Request $request)
     {
+        if (!$request->session()->has('student')) {
+            return redirect('/')
+                ->with('alert', 'Please log in to finish the quiz.');
+        }
+
         $word = strtolower($request->input('word'));
         $puzzleString = $request->session()->get('puzzleString');
         $usedIndexes = $request->session()->get('usedIndexes', []);
@@ -111,11 +116,19 @@ class QuizController extends Controller
 
     public function finish(Request $request)
     {
+        if (!$request->session()->has('student')) {
+            return redirect('/')
+                ->with('alert', 'Please log in to finish the quiz.');
+        }
+
+        $puzzleString = $request->session()->get('puzzleString');
         $words = $request->session()->get('words', []);
         $totalScore = array_sum(array_column($words, 'score'));
 
-        return view('quiz-finish', [
+        return view('quiz_finish', [
             'totalScore' => $totalScore,
+            'puzzleString' => $puzzleString,
+            'usedIndexes' => $request->session()->get('usedIndexes', []),
             'words' => $words
         ]);
     }

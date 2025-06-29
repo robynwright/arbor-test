@@ -3,7 +3,7 @@
 <div class="flex items-center justify-center min-h-[84vh]">
     <div class="bg-stone-200 rounded-lg shadow-lg p-6 w-full max-w-4xl flex">
 
-        <!-- Left Column: Summary + Remaining Letters + Play Again -->
+        <!-- Left Column: Summary + Your Words + Play Again -->
         <div class="w-1/2 p-4">
             <h1 class="text-2xl font-bold mb-4">Quiz Complete!</h1>
 
@@ -29,7 +29,7 @@
             <a href="{{ route('quiz.index') }}" class="inline-block mt-4 underline hover:font-bold">Play Again</a>
         </div>
 
-        <!-- Right Column: Your Words + Other Possible Words -->
+        <!-- Right Column: Remaining Letters + Other Possible Words -->
         <div class="w-1/2 p-4 border-l border-gray-700 overflow-auto max-h-[70vh]">
             @if (isset($remainingLetters) && count($remainingLetters) > 0)
                 <div class="mb-6">

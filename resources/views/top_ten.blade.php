@@ -7,8 +7,7 @@
         <ol class="space-y-2">
             @forelse ($scores as $score)
                 <li>
-                    <strong>{{ $score->word }}</strong> - {{ $score->score }} pts
-                    <span class="text-sm text-gray-600">({{ $score->student->name }} {{ $score->student->surname }})</span>
+                    <span class="text-sm text-gray-600">{{ $score->student->name }} {{ $score->student->surname }}</span> - <strong>{{ $score->total_score }} pts</strong>
                 </li>
             @empty
                 <li class="text-gray-500">No scores yet.</li>

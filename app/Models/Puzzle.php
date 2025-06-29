@@ -4,9 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HighScore extends Model
+class Puzzle extends Model
 {
-    protected $fillable = ['student_id', 'word', 'score'];
+    //
+    protected $fillable = [
+        'student_id',
+        'puzzle_string',
+        'total_score',
+    ];
 
     public function student()
     {

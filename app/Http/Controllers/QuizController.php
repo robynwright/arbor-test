@@ -75,15 +75,23 @@ class QuizController extends Controller
 
             // save to high scores
             $studentId = $request->session()->get('student.id');
-            $highScore = new \App\Models\HighScore();
-            $highScore->student_id = $studentId;
-            $highScore->word = $word;
-            $highScore->score = strlen($word);
-            $highScore->save();
+            $puzzleId = $request->session()->get('puzzleId');
+            $score = strlen($word);
+            
+            $submission = new \App\Models\PuzzleSubmission();
+            $submission->student_id = $studentId;
+            $submission->puzzle_id = $puzzleId;
+            $submission->submission_string = $word;
+            $submission->score = $score;
+            $submission->save();
+
+            $puzzle = \App\Models\Puzzle::find($puzzleId);
+            $puzzle->total_score += $score;
+            $puzzle->save();
             
             // Save word + update used letters
             $usedIndexes = array_merge($usedIndexes, $wordIndexes);
-            $words[] = ['word' => $word, 'score' => strlen($word)];
+            $words[] = ['word' => $word, 'score' => $score];
     
             $request->session()->put('usedIndexes', $usedIndexes);
             $request->session()->put('words', $words);
@@ -120,8 +128,21 @@ class QuizController extends Controller
 
         $letters = str_split(strtolower(implode('', $words)));
         shuffle($letters);
+
+        $puzzleString = implode('', $letters);
         
-        return implode('', $letters);
+        // Save the puzzle to the database 
+        // I would rather move this to its own class, but am keeping it here due to time constraints.
+        $puzzle = new \App\Models\Puzzle();
+        $puzzle->student_id = session('student.id');
+        $puzzle->puzzle_string = $puzzleString;
+        $puzzle->save();
+
+        // I need the puzzle id to save the submission later, so lets save it to the session
+        $puzzleId = $puzzle->id;
+        session(['puzzleId' => $puzzleId]);
+
+        return $puzzleString;
     }
 
 

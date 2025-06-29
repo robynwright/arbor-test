@@ -6,25 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('high_scores', function (Blueprint $table) {
+        Schema::create('puzzles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('student')->onDelete('cascade');
-            $table->string('word');
-            $table->unsignedInteger('score');
+            $table->string('puzzle_string');
+            $table->unsignedInteger('total_score')->default(0);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('high_scores');
+        Schema::dropIfExists('puzzles');
     }
 };
